@@ -1,0 +1,139 @@
+/* ── Priority CSS variables ──────────────────────────────────────────────── */
+
+:root {
+  --priority-low:      #4CAF50;
+  --priority-medium:   #FF9800;
+  --priority-high:     #F44336;
+  --priority-urgent:   #B71C1C;
+
+  --stage-new:         #90A4AE;
+  --stage-dispatch:    #42A5F5;
+  --stage-inprogress:  #26A69A;
+  --stage-paused:      #FFA726;
+  --stage-parts:       #AB47BC;
+  --stage-inspect:     #EC407A;
+  --stage-handoff:     #66BB6A;
+}
+
+/* ── Kanban board layout ─────────────────────────────────────────────────── */
+
+.kanban-board {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  height: calc(100vh - 120px);
+  padding-bottom: 12px;
+  align-items: flex-start;
+}
+
+.kanban-column {
+  flex-shrink: 0;
+  width: 280px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* ── Kanban card: priority left-border ───────────────────────────────────── */
+
+.kanban-card {
+  background: #fff;
+  border-radius: 8px;
+  border-left: 4px solid transparent;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
+  cursor: pointer;
+  transition: box-shadow .15s ease, transform .1s ease;
+  margin-bottom: 8px;
+}
+
+.kanban-card:hover {
+  box-shadow: 0 3px 12px rgba(0, 0, 0, .16);
+  transform: translateY(-1px);
+}
+
+.kanban-card--low      { border-left-color: var(--priority-low); }
+.kanban-card--medium   { border-left-color: var(--priority-medium); }
+.kanban-card--high     { border-left-color: var(--priority-high); }
+.kanban-card--urgent   {
+  border-left-color: var(--priority-urgent);
+  animation: pulse-border 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+  0%, 100% { border-left-color: var(--priority-urgent); }
+  50%       { border-left-color: #FF5252; box-shadow: 0 0 0 2px rgba(183, 28, 28, .25); }
+}
+
+/* ── Vehicle alert banner ────────────────────────────────────────────────── */
+
+.vehicle-alert-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #FFF8E1;
+  border: 1px solid #FFB300;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  color: #5D4037;
+}
+
+.vehicle-alert-banner__icon {
+  color: #F57F17;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.vehicle-alert-banner__text {
+  font-size: .875rem;
+  line-height: 1.5;
+}
+
+.vehicle-alert-banner__title {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+/* ── Priority chip colors ────────────────────────────────────────────────── */
+
+.chip-priority-low      { background: var(--priority-low)    !important; color: #fff !important; }
+.chip-priority-medium   { background: var(--priority-medium) !important; color: #fff !important; }
+.chip-priority-high     { background: var(--priority-high)   !important; color: #fff !important; }
+.chip-priority-urgent   { background: var(--priority-urgent) !important; color: #fff !important; }
+
+/* ── Kanban stage chip colors ────────────────────────────────────────────── */
+
+.chip-stage-new         { background: var(--stage-new)         !important; color: #fff !important; }
+.chip-stage-dispatch    { background: var(--stage-dispatch)    !important; color: #fff !important; }
+.chip-stage-inprogress  { background: var(--stage-inprogress)  !important; color: #fff !important; }
+.chip-stage-paused      { background: var(--stage-paused)      !important; color: #fff !important; }
+.chip-stage-parts       { background: var(--stage-parts)       !important; color: #fff !important; }
+.chip-stage-inspect     { background: var(--stage-inspect)     !important; color: #fff !important; }
+.chip-stage-handoff     { background: var(--stage-handoff)     !important; color: #fff !important; }
+
+/* ── Custom scrollbar (thin, grey) ──────────────────────────────────────── */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #BDBDBD transparent;
+}
+
+::-webkit-scrollbar       { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #BDBDBD; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #9E9E9E; }
+
+/* ── Dark mode overrides ─────────────────────────────────────────────────── */
+
+.v-theme--dark .kanban-card {
+  background: #2A2A3E;
+}
+
+.v-theme--dark .vehicle-alert-banner {
+  background: #3E2B00;
+  border-color: #FFA000;
+  color: #FFE0B2;
+}
+
+.v-theme--dark .vehicle-alert-banner__icon {
+  color: #FFB300;
+}
