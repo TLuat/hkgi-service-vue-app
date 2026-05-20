@@ -72,6 +72,13 @@ class UserController extends Controller
             'is_active' => 'sometimes|boolean',
         ]);
 
+        // Prevent self-demotion — would immediately lock the user out of owner pages
+        if ($user->id === $request->user()->id && isset($data['role'])) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'role' => 'Không thể tự thay đổi quyền của chính mình.',
+            ]);
+        }
+
         $user->update($data);
 
         ActivityLogger::log(

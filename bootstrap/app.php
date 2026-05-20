@@ -28,11 +28,27 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (\Throwable $e, Request $request) {
+            // Let Inertia middleware handle validation errors (redirects back with session errors)
+            if ($e instanceof \Illuminate\Validation\ValidationException) {
+                return null;
+            }
+
             if (! $request->header('X-Inertia') && ! $request->expectsJson()) {
                 return null;
             }
 
             if ($e instanceof HttpException) {
+                // For GET (page navigation): redirect home instead of returning JSON
+                if ($request->isMethod('GET')) {
+                    $status = $e->getStatusCode();
+                    $msg = match($status) {
+                        403 => 'Bạn không có quyền truy cập trang này.',
+                        404 => 'Trang không tồn tại.',
+                        default => $e->getMessage() ?: 'Có lỗi xảy ra.',
+                    };
+                    return redirect('/')->with('error', $msg);
+                }
+
                 return response()->json([
                     'message' => $e->getMessage() ?: 'HTTP error occurred.',
                 ], $e->getStatusCode());

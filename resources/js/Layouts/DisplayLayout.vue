@@ -1,6 +1,6 @@
 <template>
-  <v-app theme="dark">
-    <v-main style="background: #0d0d1a; min-height: 100vh;">
+  <v-app theme="light">
+    <v-main style="background: #EDF2FA; min-height: 100vh;">
       <slot />
     </v-main>
   </v-app>

@@ -24,6 +24,7 @@ class AppSettingController extends Controller
         return Inertia::render('Control', [
             'settings'      => AppSetting::first(),
             'vehicleModels' => VehicleModel::all(),
+            'vehicleAlerts' => \App\Models\VehicleAlert::orderBy('license_plate')->get(),
             'activityLogs'  => ActivityLog::latest()->limit(200)->get(),
         ]);
     }

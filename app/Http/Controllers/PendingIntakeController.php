@@ -113,7 +113,7 @@ class PendingIntakeController extends Controller
             'advisor'             => 'required|string|max:255',
             'priority'            => 'required|in:Thấp,Trung bình,Cao,Khẩn',
             'check_in_at'         => 'required|date',
-            'due_at'              => 'required|date',
+            'due_at'              => 'sometimes|nullable|date',
             'concern'             => 'required|string',
             // optional extras
             'service_job_type'    => 'sometimes|in:maintenance,repair,paint,wash',

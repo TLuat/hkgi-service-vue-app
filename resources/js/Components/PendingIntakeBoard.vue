@@ -32,7 +32,7 @@
             v-for="intake in pendingIntakes"
             :key="intake.id"
             :active="selectedIntakeId === intake.id"
-            active-color="primary"
+            color="primary"
             rounded="lg"
             class="mb-1 border"
             @click="selectedIntakeId = intake.id"
@@ -325,6 +325,15 @@
           </v-col>
           <v-col cols="12" sm="6">
             <v-text-field
+              v-model="acceptForm.check_in_at"
+              label="Giờ vào *"
+              type="datetime-local"
+              density="compact"
+              :error-messages="acceptForm.errors.check_in_at"
+            />
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-text-field
               v-model="acceptForm.due_at"
               label="Hẹn xong"
               type="datetime-local"
@@ -360,6 +369,12 @@ import { router, useForm } from '@inertiajs/vue3'
 import VehicleAlertBanner from './VehicleAlertBanner.vue'
 import { DEPARTMENTS } from '../utils/roles'
 import { useConfirm } from '../composables/useConfirm'
+
+function nowDateTime(): string {
+  const d = new Date()
+  d.setSeconds(0, 0)
+  return d.toISOString().slice(0, 16)
+}
 import type { PendingIntake, AppUser, DepartmentName, TicketPriority } from '../types'
 
 const PRIORITIES: TicketPriority[] = ['Thấp', 'Trung bình', 'Cao', 'Khẩn']
@@ -489,6 +504,7 @@ const acceptForm = useForm({
   advisor:             '',
   dispatcher:          '',
   priority:            'Trung bình' as TicketPriority,
+  check_in_at:         '',
   due_at:              '',
   concern:             '',
 })
@@ -504,9 +520,10 @@ function openAcceptDialog() {
   acceptForm.combine_paint       = intake.combinePaint
   acceptForm.has_wash            = intake.hasWash
   acceptForm.department          = null
-  acceptForm.advisor             = ''
+  acceptForm.advisor             = intake.assignedAdvisor ?? ''
   acceptForm.dispatcher          = ''
   acceptForm.priority            = 'Trung bình'
+  acceptForm.check_in_at         = nowDateTime()
   acceptForm.due_at              = ''
   acceptForm.concern             = ''
   acceptForm.clearErrors()

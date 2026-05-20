@@ -12,6 +12,9 @@ class IntakeDisplayController extends Controller
     {
         return Inertia::render('IntakeDisplay', [
             'intakes' => PendingIntake::orderBy('arrived_at')->get(),
+            'tickets' => \App\Models\ServiceTicket::whereNull('delivered_at')
+                ->orderBy('check_in_at')
+                ->get(),
         ]);
     }
 }
